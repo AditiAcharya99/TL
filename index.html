@@ -7,34 +7,524 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0e1a;
-  --surface: #111525;
-  --surface2: #141830;
-  --border: #1e2438;
-  --border-active: #4338ca;
-  --text: #e8eaed;
-  --text2: #9ca3af;
-  --text3: #6b7280;
-  --text4: #4b5563;
-  --accent: #818cf8;
-  --accent-deep: #3730a3;
-  --green: #10b981;
-  --green-bg: rgba(16,185,129,0.08);
-  --green-border: rgba(16,185,129,0.2);
-  --red: #ef4444;
-  --red-bg: rgba(239,68,68,0.08);
-  --red-border: rgba(239,68,68,0.2);
-  --amber: #f59e0b;
-  --indigo: #6366f1;
-  --yellow: #fbbf24;
-  --slate: #475569;
-  --lavender: #a5b4fc;
+  --bg: #0a0e1a; --surface: #111525; --surface2: #141830;
+  --border: #1e2438; --border-active: #4338ca;
+  --text: #e8eaed; --text2: #9ca3af; --text3: #6b7280;
+  --accent: #818cf8; --accent-deep: #3730a3;
+  --green: #10b981; --green-bg: rgba(16,185,129,0.08); --green-border: rgba(16,185,129,0.2);
+  --red: #ef4444; --red-bg: rgba(239,68,68,0.08); --red-border: rgba(239,68,68,0.2);
+  --amber: #f59e0b; --indigo: #6366f1; --lavender: #a5b4fc;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+.container { max-width:1140px; margin:0 auto; padding:20px 16px; }
+.header h1 { font-size:22px; font-weight:800; letter-spacing:-0.03em; }
+.header p { font-size:13px; color:var(--text3); margin-top:4px; }
+.layout { display:grid; grid-template-columns:310px 1fr; gap:20px; margin-top:20px; }
 
-.container { max-width:1120px; margin:0 auto; padding:20px 16px; }
+.left-panel { background:var(--surface); border-radius:14px; padding:20px; border:1px solid var(--border); align-self:start; position:sticky; top:20px; }
+.panel-title { font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px; }
 
+.how-it-works { background:var(--bg); border-radius:10px; padding:14px; border:1px solid var(--border); margin-bottom:20px; font-size:11px; color:var(--text2); line-height:1.65; }
+.how-it-works strong { color:var(--text); font-weight:600; }
+.how-it-works .hw-item { margin-bottom:8px; }
+.how-it-works .hw-item:last-child { margin-bottom:0; }
+
+.section-label { font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; margin-top:4px; }
+
+.slider-group { margin-bottom:18px; }
+.slider-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+.slider-label { font-size:12.5px; font-weight:600; color:#c8ccd4; }
+.slider-value { font-size:16px; font-weight:700; color:var(--text); font-family:'DM Mono',monospace; }
+.slider-pct { font-size:11px; color:var(--text3); font-weight:400; }
+.slider-input { width:100%; accent-color:var(--indigo); height:6px; cursor:pointer; -webkit-appearance:none; background:#1e2438; border-radius:3px; outline:none; }
+.slider-input::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--indigo); cursor:pointer; }
+.slider-range { display:flex; justify-content:space-between; font-size:10px; color:var(--text3); margin-top:2px; }
+
+.toggle-group { margin-bottom:18px; }
+.toggle-label { font-size:12.5px; font-weight:600; color:#c8ccd4; margin-bottom:8px; }
+.toggle-row { display:flex; gap:0; border-radius:8px; overflow:hidden; border:1px solid #2d3348; }
+.toggle-btn { flex:1; padding:8px 4px; font-size:11.5px; font-weight:400; font-family:'DM Sans',sans-serif; background:var(--surface2); color:var(--text3); border:none; cursor:pointer; transition:all 0.15s; }
+.toggle-btn.active { background:var(--accent-deep); color:#e0e7ff; font-weight:700; }
+
+.assumptions-box { background:var(--bg); border-radius:8px; padding:10px 12px; border:1px solid var(--border); margin-top:4px; }
+.assumptions-box .ab-title { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; font-weight:600; }
+.assumptions-box .ab-row { font-size:11px; color:var(--text2); line-height:1.7; }
+.assumptions-box .ab-val { color:var(--text); font-weight:600; font-family:'DM Mono',monospace; }
+
+/* Right panel */
+.current-banner { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.cb-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+.cb-value { font-size:20px; font-weight:800; margin-top:2px; }
+.cb-sub { font-size:11px; color:#787f8c; margin-top:2px; }
+
+.result-card { background:var(--surface); border:1px solid var(--border-active); border-radius:14px; padding:20px; position:relative; overflow:hidden; margin-bottom:16px; }
+.result-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,#6366f1,#818cf8); }
+.result-title { font-size:15px; font-weight:700; color:#e0e7ff; margin-bottom:4px; }
+.result-sub { font-size:12px; color:var(--text3); margin-bottom:16px; font-family:'DM Mono',monospace; }
+
+.delta-box { border-radius:10px; padding:14px 16px; margin-bottom:16px; }
+.delta-box.pos { background:var(--green-bg); border:1px solid var(--green-border); }
+.delta-box.neg { background:var(--red-bg); border:1px solid var(--red-border); }
+.delta-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px; }
+.delta-value { font-size:28px; font-weight:800; }
+.delta-value.pos { color:var(--green); }
+.delta-value.neg { color:var(--red); }
+.delta-aside { font-size:11px; color:var(--text2); margin-top:4px; }
+
+.section-box { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+.section-box-title { font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+.section-box-note { font-size:11px; color:var(--text3); margin-bottom:10px; font-style:italic; }
+
+.decomp-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-size:12.5px; }
+.decomp-row .dl { color:var(--text2); }
+.decomp-row .dv { font-family:'DM Mono',monospace; font-weight:600; }
+.decomp-row .dv.pos { color:var(--green); }
+.decomp-row .dv.neg { color:var(--red); }
+.decomp-row .dv.neutral { color:var(--text2); }
+.decomp-row .dv.zero { color:var(--text3); }
+.decomp-divider { border-top:1px solid var(--border); margin:8px 0; }
+.decomp-row.total .dl { color:var(--text); font-weight:600; }
+.decomp-row.total .dv { font-size:14px; }
+
+.punchline { background:var(--green-bg); border:1px solid var(--green-border); border-radius:8px; padding:10px 14px; margin-top:10px; font-size:12px; color:var(--text2); line-height:1.6; }
+.punchline.warning { background:var(--red-bg); border-color:var(--red-border); }
+.punchline strong { color:var(--text); }
+.punchline .val-green { color:var(--green); font-weight:700; font-family:'DM Mono',monospace; }
+.punchline .val-red { color:var(--red); font-weight:700; font-family:'DM Mono',monospace; }
+
+.totals-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; padding-top:14px; border-top:1px solid var(--border); }
+.total-item .ti-label { font-size:9px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+.total-item .ti-value { font-size:16px; font-weight:700; color:var(--text); margin-top:2px; }
+
+.methodology { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.methodology h3 { font-size:13px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; }
+.methodology p { font-size:12px; color:var(--text2); line-height:1.7; margin-bottom:8px; }
+.methodology p:last-child { margin-bottom:0; }
+.methodology strong { color:#c8ccd4; }
+
+@media (max-width:800px) {
+  .layout { grid-template-columns:1fr; }
+  .left-panel { position:static; }
+  .current-banner { grid-template-columns:1fr 1fr; }
+  .totals-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Recruiter Incentive Simulator</h1>
+    <p>168 recruiters · 7 Team Leads · 15 Managers · 4,152 placements · March 2026 actuals</p>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="panel-title">Controls</div>
+
+      <div class="how-it-works">
+        <div class="hw-item"><strong>Base per-placement incentive</strong> is held fixed at the current FY26 slab rates. At all-zero settings below, the proposed scheme costs exactly the same as the current one.</div>
+        <div class="hw-item"><strong>Retention bonus</strong> is the new component: a per-month payment for each month a placed worker continues in the role, paid on top of the per-placement base. Revenue comes from the extra month of tenure; cost accrues across all months including the ones where the worker would have stayed anyway.</div>
+        <div class="hw-item"><strong>Sourcing bonus</strong> is paid once per cross-recruiter placement — when a recruiter shares a candidate who gets placed by a different recruiter. Set as a fraction of the placer's per-placement base rate.</div>
+      </div>
+
+      <div class="section-label">Retention Bonus (per month per placement)</div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Slab 1 placements</span>
+          <span class="slider-value" id="y1-val">₹20 <span class="slider-pct">(14% of base)</span></span>
+        </div>
+        <input class="slider-input" type="range" id="y1" min="0" max="100" step="5" value="20">
+        <div class="slider-range"><span>₹0</span><span>₹100</span></div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Slab 2 placements</span>
+          <span class="slider-value" id="y2-val">₹20 <span class="slider-pct">(11% of base)</span></span>
+        </div>
+        <input class="slider-input" type="range" id="y2" min="0" max="100" step="5" value="20">
+        <div class="slider-range"><span>₹0</span><span>₹100</span></div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Slab 3 placements</span>
+          <span class="slider-value" id="y3-val">₹20 <span class="slider-pct">(7% of base)</span></span>
+        </div>
+        <input class="slider-input" type="range" id="y3" min="0" max="100" step="5" value="20">
+        <div class="slider-range"><span>₹0</span><span>₹100</span></div>
+      </div>
+
+      <div class="section-label" style="margin-top:8px;">Sourcing Bonus</div>
+
+      <div class="toggle-group">
+        <div class="toggle-label">Amount as a fraction of placer's base rate</div>
+        <div class="toggle-row">
+          <button class="toggle-btn" data-group="zfac" data-val="1">Full base</button>
+          <button class="toggle-btn" data-group="zfac" data-val="0.667">2/3 of base</button>
+          <button class="toggle-btn active" data-group="zfac" data-val="0.5">Half of base</button>
+          <button class="toggle-btn" data-group="zfac" data-val="0.333">1/3 of base</button>
+        </div>
+      </div>
+
+      <div class="assumptions-box">
+        <div class="ab-title">Assumed Behavioural Response</div>
+        <div class="ab-row">Retention improvement from bonus: <span class="ab-val">+1 month</span></div>
+        <div class="ab-row">Placements sourced cross-recruiter: <span class="ab-val">5% of all</span></div>
+        <div class="ab-row">Of those, share that are net new: <span class="ab-val">50%</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div id="result-area"></div>
+
+      <div class="methodology">
+        <h3>How the Numbers Are Calculated</h3>
+
+        <p><strong>Per-placement base incentive (unchanged from current scheme):</strong> Each recruiter's base pay uses marginal slab brackets — the first set of placements at the Slab 1 rate, the next set at the Slab 2 rate, and so on. Placements with a hiring/sourcing fee (HSR) and without it are counted on separate ladders. Enterprise Consumer/BFSI slabs break at 35 and 70 placements; Airtel at 30 and 60; Corporate at 25 and 50. HSR rates are ₹150/200/300; non-HSR rates are ₹130/175/250. Recruiters below their vertical's target earn nothing. Because the base incentive is identical to the current scheme, it cancels out — every rupee of cost change comes from the retention and sourcing bonuses.</p>
+
+        <p><strong>Retention bonus (new cost, accrues monthly):</strong> For each eligible recruiter, every placement earns an additional amount per month the worker stays (capped at 12 months). The per-month rate depends on which slab tier that placement falls in. Team Leads and Managers receive the same per-month rates, applied to their attributed placements (capped at 100). The assumed improvement is that workers stay 1 additional month on average, generating extra markup revenue for the firm but also incurring retention bonus cost across all months of the worker's tenure — including the months they would have stayed without the bonus.</p>
+
+        <p><strong>Sourcing bonus (new cost, paid once at placement):</strong> 5% of all placements (not just target-eligible) are assumed to be cross-recruiter sourced, since a recruiter can share a candidate regardless of whether they meet their own placement target. Each cross-sourced placement carries a one-time sourcing bonus set as a fraction of the placer's average base rate. Of these, half are assumed to be genuinely new placements (creating new revenue and new placement costs), and half are substitution (same total placements, just the sourcing bonus cost).</p>
+
+        <p><strong>Revenue:</strong> For each recruiter, monthly revenue = average monthly markup per placement × number of placements. The assumed 1 additional month of retention increases the number of months each worker stays, adding one extra month of markup revenue per placement. Net new placements from cross-sourcing also generate markup revenue and sourcing fees.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───
+const REC = [{"v": "Enterprise BFSI", "tp": 22, "ps": 22, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.48, "mm": 655.5, "sr": 42600.0, "npl": 22, "nsf": 22, "d": "E", "conv": 0.711}, {"v": "Enterprise Airtel", "tp": 107, "ps": 107, "pn": 0, "sl": 3, "t": 30, "el": true, "cp": 23350.0, "tm": 4.0, "mm": 295.0, "sr": 133750.0, "npl": 107, "nsf": 107, "d": "E", "conv": 0.75}, {"v": "Enterprise BFSI", "tp": 54, "ps": 54, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 9050.0, "tm": 2.26, "mm": 756.0, "sr": 113400.0, "npl": 54, "nsf": 54, "d": "E", "conv": 0.59}, {"v": "Enterprise Consumer+", "tp": 14, "ps": 1, "pn": 13, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.24, "mm": 305.4, "sr": 2000.0, "npl": 14, "nsf": 1, "d": "E", "conv": 0.701}, {"v": "Enterprise BFSI", "tp": 30, "ps": 28, "pn": 2, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.94, "mm": 375.0, "sr": 56000.0, "npl": 30, "nsf": 28, "d": "E", "conv": 0.667}, {"v": "Enterprise Consumer+", "tp": 36, "ps": 30, "pn": 6, "sl": 2, "t": 35, "el": true, "cp": 5280.0, "tm": 5.08, "mm": 355.7, "sr": 27900.0, "npl": 36, "nsf": 30, "d": "E", "conv": 0.881}, {"v": "Enterprise BFSI", "tp": 6, "ps": 6, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.9, "mm": 375.0, "sr": 12000.0, "npl": 6, "nsf": 6, "d": "E", "conv": 0.558}, {"v": "Enterprise Airtel", "tp": 31, "ps": 31, "pn": 0, "sl": 1, "t": 30, "el": true, "cp": 4650.0, "tm": 1.33, "mm": 295.0, "sr": 38750.0, "npl": 31, "nsf": 31, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 33, "ps": 33, "pn": 0, "sl": 1, "t": 30, "el": true, "cp": 4950.0, "tm": 5.96, "mm": 295.0, "sr": 41250.0, "npl": 33, "nsf": 33, "d": "E", "conv": 0.876}, {"v": "Enterprise Airtel", "tp": 65, "ps": 65, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 11250.0, "tm": 3.82, "mm": 295.0, "sr": 81250.0, "npl": 65, "nsf": 65, "d": "E", "conv": 0.81}, {"v": "Enterprise BFSI", "tp": 19, "ps": 19, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.68, "mm": 740.1, "sr": 39200.0, "npl": 19, "nsf": 19, "d": "E", "conv": 0.541}, {"v": "Enterprise Consumer+", "tp": 59, "ps": 59, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 10050.0, "tm": 5.46, "mm": 378.8, "sr": 79860.0, "npl": 59, "nsf": 59, "d": "E", "conv": 0.945}, {"v": "Enterprise Airtel", "tp": 19, "ps": 19, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 4.02, "mm": 295.0, "sr": 23750.0, "npl": 19, "nsf": 19, "d": "E", "conv": 0.775}, {"v": "Enterprise Airtel", "tp": 40, "ps": 40, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 6250.0, "tm": 3.66, "mm": 531.4, "sr": 29850.0, "npl": 40, "nsf": 40, "d": "E", "conv": 0.711}, {"v": "Enterprise BFSI", "tp": 8, "ps": 8, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.07, "mm": 667.5, "sr": 17000.0, "npl": 8, "nsf": 8, "d": "E", "conv": 0.529}, {"v": "Enterprise BFSI", "tp": 37, "ps": 37, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 5650.0, "tm": 2.05, "mm": 550.1, "sr": 75700.0, "npl": 37, "nsf": 37, "d": "E", "conv": 0.549}, {"v": "Enterprise Airtel", "tp": 41, "ps": 41, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 6450.0, "tm": 3.26, "mm": 295.0, "sr": 51250.0, "npl": 41, "nsf": 41, "d": "E", "conv": 0.746}, {"v": "Enterprise Airtel", "tp": 12, "ps": 12, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 4.38, "mm": 295.0, "sr": 15000.0, "npl": 12, "nsf": 12, "d": "E", "conv": 0.819}, {"v": "Enterprise BFSI", "tp": 20, "ps": 20, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.62, "mm": 756.0, "sr": 42000.0, "npl": 20, "nsf": 20, "d": "E", "conv": 0.547}, {"v": "Enterprise Airtel", "tp": 12, "ps": 12, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 3.85, "mm": 295.0, "sr": 15000.0, "npl": 12, "nsf": 12, "d": "E", "conv": 0.823}, {"v": "Enterprise Consumer+", "tp": 48, "ps": 0, "pn": 48, "sl": 2, "t": 35, "el": true, "cp": 6825.0, "tm": 3.52, "mm": 304.7, "sr": 0.0, "npl": 48, "nsf": 0, "d": "E", "conv": 0.871}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.29, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.575}, {"v": "Enterprise Airtel", "tp": 47, "ps": 47, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 7650.0, "tm": 1.33, "mm": 295.0, "sr": 58750.0, "npl": 47, "nsf": 47, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 64, "ps": 64, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 11050.0, "tm": 2.42, "mm": 295.0, "sr": 80000.0, "npl": 64, "nsf": 64, "d": "E", "conv": 0.67}, {"v": "Enterprise Airtel", "tp": 49, "ps": 49, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 8050.0, "tm": 2.88, "mm": 295.0, "sr": 61250.0, "npl": 49, "nsf": 49, "d": "E", "conv": 0.734}, {"v": "Enterprise BFSI", "tp": 43, "ps": 43, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 6850.0, "tm": 2.02, "mm": 375.0, "sr": 86000.0, "npl": 43, "nsf": 43, "d": "E", "conv": 0.609}, {"v": "Enterprise Airtel", "tp": 25, "ps": 25, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 2.67, "mm": 295.0, "sr": 31250.0, "npl": 25, "nsf": 25, "d": "E", "conv": 0.723}, {"v": "Enterprise Airtel", "tp": 12, "ps": 12, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 3.4, "mm": 295.0, "sr": 15000.0, "npl": 12, "nsf": 12, "d": "E", "conv": 0.775}, {"v": "Enterprise BFSI", "tp": 11, "ps": 11, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.85, "mm": 686.7, "sr": 22900.0, "npl": 11, "nsf": 11, "d": "E", "conv": 0.67}, {"v": "Enterprise BFSI", "tp": 4, "ps": 1, "pn": 3, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.01, "mm": 768.8, "sr": 2000.0, "npl": 4, "nsf": 1, "d": "E", "conv": 0.707}, {"v": "Enterprise BFSI", "tp": 30, "ps": 4, "pn": 26, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 4.2, "mm": 404.0, "sr": 9000.0, "npl": 30, "nsf": 4, "d": "E", "conv": 0.695}, {"v": "Enterprise BFSI", "tp": 8, "ps": 3, "pn": 5, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.18, "mm": 703.1, "sr": 6000.0, "npl": 8, "nsf": 3, "d": "E", "conv": 0.734}, {"v": "Enterprise BFSI", "tp": 25, "ps": 14, "pn": 11, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.15, "mm": 588.4, "sr": 29400.0, "npl": 25, "nsf": 14, "d": "E", "conv": 0.562}, {"v": "Enterprise BFSI", "tp": 39, "ps": 27, "pn": 12, "sl": 2, "t": 35, "el": true, "cp": 5610.0, "tm": 2.78, "mm": 375.0, "sr": 54000.0, "npl": 39, "nsf": 27, "d": "E", "conv": 0.656}, {"v": "Enterprise BFSI", "tp": 16, "ps": 16, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.49, "mm": 756.0, "sr": 33600.0, "npl": 16, "nsf": 16, "d": "E", "conv": 0.541}, {"v": "Enterprise BFSI", "tp": 30, "ps": 30, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.6, "mm": 552.8, "sr": 61400.0, "npl": 30, "nsf": 30, "d": "E", "conv": 0.54}, {"v": "Enterprise Consumer+", "tp": 45, "ps": 45, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 7250.0, "tm": 2.64, "mm": 393.3, "sr": 183520.0, "npl": 45, "nsf": 45, "d": "E", "conv": 0.866}, {"v": "Enterprise BFSI", "tp": 31, "ps": 31, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.19, "mm": 473.3, "sr": 62800.0, "npl": 31, "nsf": 31, "d": "E", "conv": 0.489}, {"v": "Enterprise Consumer+", "tp": 3, "ps": 2, "pn": 1, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.12, "mm": 350.0, "sr": 4000.0, "npl": 3, "nsf": 2, "d": "E", "conv": 0.428}, {"v": "Enterprise Consumer+", "tp": 12, "ps": 0, "pn": 12, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.98, "mm": 300.0, "sr": 0.0, "npl": 12, "nsf": 0, "d": "E", "conv": 0.407}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 52, "ps": 0, "pn": 52, "sl": 2, "t": 35, "el": true, "cp": 7525.0, "tm": 2.18, "mm": 329.8, "sr": 0.0, "npl": 52, "nsf": 0, "d": "E", "conv": 0.897}, {"v": "Enterprise Airtel", "tp": 56, "ps": 56, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 9450.0, "tm": 1.6, "mm": 295.0, "sr": 70000.0, "npl": 56, "nsf": 56, "d": "E", "conv": 0.633}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.65, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.56}, {"v": "Enterprise Consumer+", "tp": 7, "ps": 7, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 295.0, "sr": 8750.0, "npl": 7, "nsf": 7, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 95, "ps": 0, "pn": 95, "sl": 3, "t": 35, "el": true, "cp": 16925.0, "tm": 1.86, "mm": 300.0, "sr": 0.0, "npl": 95, "nsf": 0, "d": "E", "conv": 0.633}, {"v": "Enterprise Consumer+", "tp": 45, "ps": 0, "pn": 45, "sl": 2, "t": 35, "el": true, "cp": 6300.0, "tm": 1.0, "mm": 300.0, "sr": 0.0, "npl": 45, "nsf": 0, "d": "E", "conv": 0.494}, {"v": "Enterprise Consumer+", "tp": 38, "ps": 21, "pn": 17, "sl": 2, "t": 35, "el": true, "cp": 5360.0, "tm": 1.96, "mm": 397.4, "sr": 29800.0, "npl": 38, "nsf": 21, "d": "E", "conv": 0.695}, {"v": "Enterprise Consumer+", "tp": 57, "ps": 1, "pn": 56, "sl": 2, "t": 35, "el": true, "cp": 8375.0, "tm": 1.94, "mm": 308.8, "sr": 5000.0, "npl": 57, "nsf": 1, "d": "E", "conv": 0.652}, {"v": "Enterprise Consumer+", "tp": 13, "ps": 3, "pn": 10, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.29, "mm": 317.3, "sr": 6000.0, "npl": 13, "nsf": 3, "d": "E", "conv": 0.412}, {"v": "Enterprise BFSI", "tp": 11, "ps": 0, "pn": 11, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.87, "mm": 375.0, "sr": 0.0, "npl": 11, "nsf": 0, "d": "E", "conv": 0.586}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 24, "ps": 24, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.92, "mm": 295.0, "sr": 30000.0, "npl": 24, "nsf": 24, "d": "E", "conv": 0.634}, {"v": "Enterprise Airtel", "tp": 43, "ps": 43, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 6850.0, "tm": 1.53, "mm": 600.0, "sr": 25800.0, "npl": 43, "nsf": 43, "d": "E", "conv": 0.556}, {"v": "Enterprise BFSI", "tp": 13, "ps": 13, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.92, "mm": 756.0, "sr": 27300.0, "npl": 13, "nsf": 13, "d": "E", "conv": 0.436}, {"v": "Enterprise BFSI", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 756.0, "sr": 8400.0, "npl": 4, "nsf": 4, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 27, "ps": 27, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.24, "mm": 600.0, "sr": 16200.0, "npl": 27, "nsf": 27, "d": "E", "conv": 0.405}, {"v": "Enterprise Consumer+", "tp": 19, "ps": 0, "pn": 19, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.32, "mm": 356.6, "sr": 0.0, "npl": 19, "nsf": 0, "d": "E", "conv": 0.905}, {"v": "Enterprise BFSI", "tp": 16, "ps": 14, "pn": 2, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.99, "mm": 711.8, "sr": 29800.0, "npl": 16, "nsf": 14, "d": "E", "conv": 0.378}, {"v": "Enterprise BFSI", "tp": 24, "ps": 24, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 48000.0, "npl": 24, "nsf": 24, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 6, "ps": 0, "pn": 6, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.3, "mm": 325.0, "sr": 0.0, "npl": 6, "nsf": 0, "d": "E", "conv": 0.398}, {"v": "Enterprise Consumer+", "tp": 2, "ps": 2, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.08, "mm": 375.0, "sr": 4000.0, "npl": 2, "nsf": 2, "d": "E", "conv": 0.348}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 25, "ps": 25, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.16, "mm": 450.0, "sr": 378000.0, "npl": 25, "nsf": 25, "d": "E", "conv": 0.813}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 33, "ps": 0, "pn": 33, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.29, "mm": 329.5, "sr": 0.0, "npl": 33, "nsf": 0, "d": "E", "conv": 0.77}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.27, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.4}, {"v": "Enterprise Consumer+", "tp": 1, "ps": 0, "pn": 1, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 300.0, "sr": 0.0, "npl": 1, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 73, "ps": 73, "pn": 0, "sl": 3, "t": 30, "el": true, "cp": 13150.0, "tm": 1.2, "mm": 295.0, "sr": 91250.0, "npl": 73, "nsf": 73, "d": "E", "conv": 0.689}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.05, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.51}, {"v": "Enterprise Consumer+", "tp": 40, "ps": 40, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 6250.0, "tm": 1.34, "mm": 375.0, "sr": 12000.0, "npl": 40, "nsf": 40, "d": "E", "conv": 0.752}, {"v": "Enterprise Consumer+", "tp": 32, "ps": 1, "pn": 31, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.03, "mm": 309.4, "sr": 600.0, "npl": 32, "nsf": 1, "d": "E", "conv": 0.473}, {"v": "Enterprise Consumer+", "tp": 41, "ps": 0, "pn": 41, "sl": 2, "t": 35, "el": true, "cp": 5600.0, "tm": 1.87, "mm": 300.0, "sr": 0.0, "npl": 41, "nsf": 0, "d": "E", "conv": 0.579}, {"v": "Enterprise Airtel", "tp": 18, "ps": 18, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.14, "mm": 295.0, "sr": 22500.0, "npl": 18, "nsf": 18, "d": "E", "conv": 0.688}, {"v": "Enterprise BFSI", "tp": 17, "ps": 17, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.52, "mm": 375.0, "sr": 34000.0, "npl": 17, "nsf": 17, "d": "E", "conv": 0.575}, {"v": "Enterprise Consumer+", "tp": 60, "ps": 0, "pn": 60, "sl": 2, "t": 35, "el": true, "cp": 8925.0, "tm": 0.96, "mm": 323.3, "sr": 0.0, "npl": 60, "nsf": 0, "d": "E", "conv": 0.909}, {"v": "Enterprise BFSI", "tp": 23, "ps": 23, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.58, "mm": 756.0, "sr": 48300.0, "npl": 23, "nsf": 23, "d": "E", "conv": 0.465}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 8, "ps": 8, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.46, "mm": 517.9, "sr": 16300.0, "npl": 8, "nsf": 8, "d": "E", "conv": 0.353}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 40, "ps": 40, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 6250.0, "tm": 1.32, "mm": 375.0, "sr": 80000.0, "npl": 40, "nsf": 40, "d": "E", "conv": 0.553}, {"v": "Enterprise Consumer+", "tp": 3, "ps": 3, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.94, "mm": 210.0, "sr": 3000.0, "npl": 3, "nsf": 3, "d": "E", "conv": 0.549}, {"v": "Enterprise Airtel", "tp": 23, "ps": 23, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 295.0, "sr": 28750.0, "npl": 23, "nsf": 23, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 15, "ps": 15, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.45, "mm": 295.0, "sr": 18750.0, "npl": 15, "nsf": 15, "d": "E", "conv": 0.441}, {"v": "Enterprise Consumer+", "tp": 106, "ps": 0, "pn": 106, "sl": 3, "t": 35, "el": true, "cp": 19675.0, "tm": 1.05, "mm": 300.0, "sr": 0.0, "npl": 106, "nsf": 0, "d": "E", "conv": 0.547}, {"v": "Enterprise BFSI", "tp": 1, "ps": 0, "pn": 1, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 1, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.53, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.41}, {"v": "Enterprise Airtel", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 295.0, "sr": 5000.0, "npl": 4, "nsf": 4, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 6, "ps": 0, "pn": 6, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.58, "mm": 320.8, "sr": 0.0, "npl": 6, "nsf": 0, "d": "E", "conv": 0.512}, {"v": "Enterprise Airtel", "tp": 6, "ps": 6, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.34, "mm": 295.0, "sr": 7500.0, "npl": 6, "nsf": 6, "d": "E", "conv": 0.355}, {"v": "Enterprise Airtel", "tp": 72, "ps": 72, "pn": 0, "sl": 3, "t": 30, "el": true, "cp": 12850.0, "tm": 0.82, "mm": 295.0, "sr": 90000.0, "npl": 72, "nsf": 72, "d": "E", "conv": 0.629}, {"v": "Enterprise Consumer+", "tp": 12, "ps": 0, "pn": 12, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.67, "mm": 300.0, "sr": 0.0, "npl": 11, "nsf": 0, "d": "E", "conv": 0.471}, {"v": "Enterprise BFSI", "tp": 29, "ps": 28, "pn": 1, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.55, "mm": 664.0, "sr": 58200.0, "npl": 29, "nsf": 28, "d": "E", "conv": 0.474}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 38, "ps": 38, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 5850.0, "tm": 1.13, "mm": 448.0, "sr": 560940.0, "npl": 38, "nsf": 38, "d": "E", "conv": 0.748}, {"v": "Enterprise BFSI", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.48, "mm": 660.8, "sr": 8300.0, "npl": 4, "nsf": 4, "d": "E", "conv": 0.308}, {"v": "Enterprise BFSI", "tp": 14, "ps": 14, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.31, "mm": 756.0, "sr": 29400.0, "npl": 14, "nsf": 14, "d": "E", "conv": 0.404}, {"v": "Enterprise Airtel", "tp": 33, "ps": 33, "pn": 0, "sl": 1, "t": 30, "el": true, "cp": 4950.0, "tm": 0.34, "mm": 295.0, "sr": 41250.0, "npl": 33, "nsf": 33, "d": "E", "conv": 0.525}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 11, "ps": 11, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.49, "mm": 756.0, "sr": 23100.0, "npl": 11, "nsf": 11, "d": "E", "conv": 0.4}, {"v": "Enterprise BFSI", "tp": 5, "ps": 5, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.19, "mm": 756.0, "sr": 10500.0, "npl": 5, "nsf": 5, "d": "E", "conv": 0.204}, {"v": "Enterprise Consumer+", "tp": 30, "ps": 0, "pn": 30, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.14, "mm": 321.7, "sr": 0.0, "npl": 30, "nsf": 0, "d": "E", "conv": 0.818}, {"v": "Enterprise Consumer+", "tp": 5, "ps": 0, "pn": 5, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.04, "mm": 330.0, "sr": 0.0, "npl": 5, "nsf": 0, "d": "E", "conv": 1.0}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.83, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.25}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 19, "ps": 4, "pn": 15, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 3.82, "mm": 373.7, "sr": 8000.0, "npl": 19, "nsf": 4, "d": "E", "conv": 0.704}, {"v": "Enterprise BFSI", "tp": 18, "ps": 18, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.58, "mm": 375.0, "sr": 36000.0, "npl": 18, "nsf": 18, "d": "E", "conv": 0.469}, {"v": "Enterprise BFSI", "tp": 10, "ps": 10, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.17, "mm": 451.2, "sr": 20200.0, "npl": 10, "nsf": 10, "d": "E", "conv": 0.222}, {"v": "Enterprise Airtel", "tp": 24, "ps": 24, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.28, "mm": 295.0, "sr": 30000.0, "npl": 24, "nsf": 24, "d": "E", "conv": 0.292}, {"v": "Enterprise Consumer+", "tp": 15, "ps": 0, "pn": 15, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 2.3, "mm": 300.0, "sr": 0.0, "npl": 15, "nsf": 0, "d": "E", "conv": 0.811}, {"v": "Enterprise BFSI", "tp": 12, "ps": 12, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.33, "mm": 756.0, "sr": 25200.0, "npl": 12, "nsf": 12, "d": "E", "conv": 0.382}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 13, "ps": 13, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.13, "mm": 375.0, "sr": 26000.0, "npl": 13, "nsf": 13, "d": "E", "conv": 0.424}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.38, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise BFSI", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.0, "mm": 375.0, "sr": 5200.0, "npl": 4, "nsf": 4, "d": "E", "conv": 0.75}, {"v": "Enterprise BFSI", "tp": 7, "ps": 7, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 11200.0, "npl": 7, "nsf": 7, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 17, "ps": 17, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.21, "mm": 295.0, "sr": 21250.0, "npl": 17, "nsf": 17, "d": "E", "conv": 0.236}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 2, "ps": 2, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.16, "mm": 756.0, "sr": 4200.0, "npl": 2, "nsf": 2, "d": "E", "conv": 0.154}, {"v": "Enterprise Consumer+", "tp": 31, "ps": 31, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.8, "mm": 399.2, "sr": 157500.0, "npl": 31, "nsf": 31, "d": "E", "conv": 0.889}, {"v": "Enterprise BFSI", "tp": 11, "ps": 11, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.05, "mm": 756.0, "sr": 23100.0, "npl": 11, "nsf": 11, "d": "E", "conv": 0.524}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 21, "ps": 0, "pn": 21, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.45, "mm": 300.0, "sr": 0.0, "npl": 21, "nsf": 0, "d": "E", "conv": 0.39}, {"v": "Enterprise Airtel", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 11, "ps": 0, "pn": 11, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.27, "mm": 300.0, "sr": 0.0, "npl": 11, "nsf": 0, "d": "E", "conv": 0.159}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 1, "ps": 1, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 756.0, "sr": 2100.0, "npl": 1, "nsf": 1, "d": "E", "conv": 0.2}, {"v": "Enterprise Consumer+", "tp": 36, "ps": 36, "pn": 0, "sl": 2, "t": 35, "el": true, "cp": 5450.0, "tm": 0.0, "mm": 375.0, "sr": 49500.0, "npl": 36, "nsf": 36, "d": "E", "conv": 0.957}, {"v": "Enterprise BFSI", "tp": 3, "ps": 3, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.1, "mm": 756.0, "sr": 6300.0, "npl": 3, "nsf": 3, "d": "E", "conv": 0.167}, {"v": "Enterprise Airtel", "tp": 2, "ps": 2, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 295.0, "sr": 2500.0, "npl": 2, "nsf": 2, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 15, "ps": 15, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 295.0, "sr": 18750.0, "npl": 15, "nsf": 15, "d": "E", "conv": 0.557}, {"v": "Enterprise BFSI", "tp": 2, "ps": 2, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.03, "mm": 756.0, "sr": 4200.0, "npl": 2, "nsf": 2, "d": "E", "conv": 0.062}, {"v": "Enterprise Consumer+", "tp": 11, "ps": 0, "pn": 11, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 300.0, "sr": 0.0, "npl": 11, "nsf": 0, "d": "E", "conv": 0.478}, {"v": "Enterprise Airtel", "tp": 44, "ps": 44, "pn": 0, "sl": 2, "t": 30, "el": true, "cp": 7050.0, "tm": 0.27, "mm": 600.0, "sr": 26400.0, "npl": 44, "nsf": 44, "d": "E", "conv": 0.181}, {"v": "Enterprise BFSI", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.11, "mm": 756.0, "sr": 8400.0, "npl": 4, "nsf": 4, "d": "E", "conv": 0.167}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Airtel", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise Airtel", "tp": 13, "ps": 13, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.78, "mm": 295.0, "sr": 16250.0, "npl": 13, "nsf": 13, "d": "E", "conv": 0.213}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise Consumer+", "tp": 12, "ps": 0, "pn": 12, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 300.0, "sr": 0.0, "npl": 12, "nsf": 0, "d": "E", "conv": 0.48}, {"v": "Enterprise Airtel", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 0.07, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise Airtel", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 30, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.557}, {"v": "Enterprise Consumer+", "tp": 0, "ps": 0, "pn": 0, "sl": 1, "t": 35, "el": false, "cp": 0.0, "tm": 0.15, "mm": 375.0, "sr": 0.0, "npl": 0, "nsf": 0, "d": "E", "conv": 0.0}, {"v": "Enterprise Consumer+", "tp": 71, "ps": 71, "pn": 0, "sl": 3, "t": 35, "el": true, "cp": 12550.0, "tm": 3.85, "mm": 459.9, "sr": 1053280.0, "npl": 71, "nsf": 71, "d": "E", "conv": 0.784}, {"v": "Corporate South", "tp": 11, "ps": 11, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 3.25, "mm": 597.3, "sr": 20400.0, "npl": 11, "nsf": 11, "d": "C", "conv": 0.749}, {"v": "Corporate South", "tp": 81, "ps": 81, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 18050.0, "tm": 3.83, "mm": 476.0, "sr": 203350.0, "npl": 81, "nsf": 81, "d": "C", "conv": 0.857}, {"v": "Corporate South", "tp": 153, "ps": 153, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 38750.0, "tm": 5.96, "mm": 450.0, "sr": 459000.0, "npl": 153, "nsf": 153, "d": "C", "conv": 0.852}, {"v": "Corporate South", "tp": 7, "ps": 6, "pn": 1, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 4.58, "mm": 552.9, "sr": 8500.0, "npl": 7, "nsf": 6, "d": "C", "conv": 0.868}, {"v": "Corporate N&E", "tp": 151, "ps": 150, "pn": 1, "sl": 3, "t": 25, "el": true, "cp": 38880.0, "tm": 3.55, "mm": 401.2, "sr": 300000.0, "npl": 151, "nsf": 150, "d": "C", "conv": 0.626}, {"v": "Corporate N&E", "tp": 265, "ps": 265, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 38750.0, "tm": 3.34, "mm": 401.4, "sr": 530000.0, "npl": 265, "nsf": 265, "d": "C", "conv": 0.689}, {"v": "Corporate South", "tp": 82, "ps": 82, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 18350.0, "tm": 4.14, "mm": 457.8, "sr": 253360.0, "npl": 82, "nsf": 82, "d": "C", "conv": 0.799}, {"v": "Corporate West", "tp": 108, "ps": 108, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 26150.0, "tm": 3.76, "mm": 379.5, "sr": 269000.0, "npl": 108, "nsf": 108, "d": "C", "conv": 0.896}, {"v": "Corporate South", "tp": 47, "ps": 47, "pn": 0, "sl": 2, "t": 25, "el": true, "cp": 8150.0, "tm": 2.91, "mm": 431.9, "sr": 132550.0, "npl": 47, "nsf": 47, "d": "C", "conv": 0.729}, {"v": "Corporate West", "tp": 8, "ps": 8, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 2.49, "mm": 522.0, "sr": 15444.0, "npl": 8, "nsf": 8, "d": "C", "conv": 0.676}, {"v": "Corporate West", "tp": 8, "ps": 8, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 3.14, "mm": 583.1, "sr": 52576.0, "npl": 8, "nsf": 8, "d": "C", "conv": 0.786}, {"v": "Corporate N&E", "tp": 76, "ps": 76, "pn": 0, "sl": 3, "t": 25, "el": true, "cp": 16550.0, "tm": 3.72, "mm": 451.9, "sr": 155500.0, "npl": 76, "nsf": 76, "d": "C", "conv": 0.673}, {"v": "Corporate West", "tp": 1, "ps": 1, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 1.33, "mm": 720.0, "sr": 1485.0, "npl": 1, "nsf": 1, "d": "C", "conv": 0.557}, {"v": "Corporate West", "tp": 19, "ps": 19, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 1.8, "mm": 403.9, "sr": 42900.0, "npl": 19, "nsf": 19, "d": "C", "conv": 0.763}, {"v": "Corporate West", "tp": 34, "ps": 34, "pn": 0, "sl": 2, "t": 25, "el": true, "cp": 5550.0, "tm": 1.55, "mm": 450.0, "sr": 61200.0, "npl": 34, "nsf": 34, "d": "C", "conv": 0.646}, {"v": "Corporate South", "tp": 43, "ps": 43, "pn": 0, "sl": 2, "t": 25, "el": true, "cp": 7350.0, "tm": 1.73, "mm": 456.4, "sr": 128800.0, "npl": 43, "nsf": 43, "d": "C", "conv": 0.785}, {"v": "Corporate N&E", "tp": 32, "ps": 31, "pn": 1, "sl": 2, "t": 25, "el": true, "cp": 5080.0, "tm": 0.77, "mm": 435.2, "sr": 76120.0, "npl": 32, "nsf": 31, "d": "C", "conv": 0.574}, {"v": "Corporate West", "tp": 5, "ps": 5, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 0.91, "mm": 687.0, "sr": 39660.0, "npl": 5, "nsf": 5, "d": "C", "conv": 0.667}, {"v": "Corporate N&E", "tp": 1, "ps": 0, "pn": 1, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 1.33, "mm": 375.0, "sr": 0.0, "npl": 1, "nsf": 0, "d": "C", "conv": 0.557}, {"v": "Corporate N&E", "tp": 4, "ps": 4, "pn": 0, "sl": 1, "t": 25, "el": false, "cp": 0.0, "tm": 0.0, "mm": 401.4, "sr": 8000.0, "npl": 4, "nsf": 4, "d": "C", "conv": 0.333}];
+
+const TEAMS = [{"name": "Ansul Rathi", "level": "TL", "d": "E", "hc": 2, "pr": 108, "avg_prod": 54.0, "target": 40, "el": true, "cp": 8100.0, "avg_tm": 4.2}, {"name": "Rachna Gurung", "level": "TL", "d": "E", "hc": 16, "pr": 1039, "avg_prod": 64.9, "target": 40, "el": true, "cp": 10000.0, "avg_tm": 2.03}, {"name": "Rohit Raj", "level": "TL", "d": "E", "hc": 9, "pr": 259, "avg_prod": 28.8, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.86}, {"name": "Chirukuri Lokesh Babu", "level": "TL", "d": "E", "hc": 2, "pr": 79, "avg_prod": 39.5, "target": 35, "el": true, "cp": 6000.0, "avg_tm": 1.6}, {"name": "Aneeket Prakash Bhosle", "level": "TL", "d": "E", "hc": 5, "pr": 180, "avg_prod": 36.0, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.15}, {"name": "Prasanth K", "level": "TL", "d": "C", "hc": 3, "pr": 310, "avg_prod": 103.3, "target": 30, "el": true, "cp": 19750.0, "avg_tm": 3.23}, {"name": "Raju Chaudhary", "level": "TL", "d": "C", "hc": 5, "pr": 328, "avg_prod": 65.6, "target": 30, "el": true, "cp": 11250.0, "avg_tm": 1.39}, {"name": "Y Mallikarjuna Reddy", "level": "MGR", "d": "E", "hc": 19, "pr": 352, "avg_prod": 18.5, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Vala Akash", "level": "MGR", "d": "E", "hc": 3, "pr": 61, "avg_prod": 20.3, "target": 35, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Rajneesh Kumar Choudhary", "level": "MGR", "d": "E", "hc": 6, "pr": 198, "avg_prod": 33.0, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Abhishek Tripathi", "level": "MGR", "d": "E", "hc": 13, "pr": 589, "avg_prod": 45.3, "target": 35, "el": true, "cp": 9250.0, "avg_tm": 1.69}, {"name": "Abdul Gani H", "level": "MGR", "d": "E", "hc": 10, "pr": 257, "avg_prod": 25.7, "target": 35, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Marilinga M", "level": "MGR", "d": "E", "hc": 14, "pr": 287, "avg_prod": 20.5, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Suraj Tanti", "level": "MGR", "d": "E", "hc": 3, "pr": 115, "avg_prod": 38.3, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Ram Dev", "level": "MGR", "d": "E", "hc": 8, "pr": 327, "avg_prod": 40.9, "target": 40, "el": true, "cp": 8200.0, "avg_tm": 1.69}, {"name": "Amit V Kumar", "level": "MGR", "d": "E", "hc": 55, "pr": 1364, "avg_prod": 24.8, "target": 40, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Rahul Sharma", "level": "MGR", "d": "E", "hc": 43, "pr": 2164, "avg_prod": 50.3, "target": 40, "el": true, "cp": 10200.0, "avg_tm": 1.69}, {"name": "Harendra Singh", "level": "MGR", "d": "E", "hc": 29, "pr": 1173, "avg_prod": 40.4, "target": 35, "el": true, "cp": 8200.0, "avg_tm": 1.69}, {"name": "Waiez", "level": "MGR", "d": "C", "hc": 4, "pr": 19, "avg_prod": 4.8, "target": 30, "el": false, "cp": 0.0, "avg_tm": 1.69}, {"name": "Manish Kumar Mahobe", "level": "MGR", "d": "C", "hc": 8, "pr": 958, "avg_prod": 119.8, "target": 30, "el": true, "cp": 24750.0, "avg_tm": 1.69}, {"name": "Shridhar K T", "level": "MGR", "d": "C", "hc": 8, "pr": 623, "avg_prod": 77.9, "target": 30, "el": true, "cp": 18150.0, "avg_tm": 1.69}, {"name": "Anoop Kumar Tripathi", "level": "MGR", "d": "C", "hc": 6, "pr": 214, "avg_prod": 35.7, "target": 30, "el": true, "cp": 7200.0, "avg_tm": 1.69}];
+
+const EXTRA_MONTHS = 1, CROSS_PCT = 5, NET_NEW_PCT = 50;
+const AVG_X = {1:140, 2:187.5, 3:275};
+const BOUNDS = {
+  "Enterprise BFSI":[35,70], "Enterprise Consumer+":[35,70], "Enterprise Airtel":[30,60],
+  "Corporate South":[25,50], "Corporate N&E":[25,50], "Corporate West":[25,50]
+};
+
+function slabSplit(count, bounds) {
+  return [Math.min(count,bounds[0]), Math.min(Math.max(count-bounds[0],0),bounds[1]-bounds[0]), Math.max(count-bounds[1],0)];
+}
+function mgmtSlab(p) {
+  if (p.d==='E') return p.avg_prod<=60?1:p.avg_prod<=70?2:3;
+  return p.avg_prod<=45?1:p.avg_prod<=60?2:3;
+}
+function fmt(n) {
+  if (Math.abs(n)>=100000) return '\u20B9'+(n/100000).toFixed(2)+'L';
+  if (Math.abs(n)>=1000) return '\u20B9'+(n/1000).toFixed(1)+'K';
+  return '\u20B9'+Math.round(n);
+}
+function fmtD(n) {
+  const s=n>=0?'+':'';
+  if (Math.abs(n)>=100000) return s+'\u20B9'+(n/100000).toFixed(2)+'L';
+  if (Math.abs(n)>=1000) return s+'\u20B9'+(n/1000).toFixed(1)+'K';
+  return s+'\u20B9'+Math.round(n);
+}
+
+// ─── Status Quo ───
+function computeSQ() {
+  let recCost=0, rev=0, elCount=0, elPRs=0;
+  REC.forEach(r => {
+    rev += r.mm*r.tm*r.npl + r.sr;
+    if (r.tp>=r.t && r.npl>0) { elCount++; elPRs+=r.npl; recCost+=r.cp; }
+  });
+  let tlCost=0, mgrCost=0;
+  TEAMS.forEach(t => { if (!t.el) return; if (t.level==='TL') tlCost+=t.cp; else mgrCost+=t.cp; });
+  const mgmtCost=tlCost+mgrCost, grand=recCost+mgmtCost;
+  return {recCost,tlCost,mgrCost,mgmtCost,grand,rev,margin:rev-grand,elCount,elPRs};
+}
+
+// ─── New Scheme ───
+function computeNew(yVals, zFac) {
+  const y=yVals;
+  // Monthly rates (per month, not multiplied by tenure)
+  let recYMonthly=0, nnYMonthly=0, markupEligible=0, markupNN=0, markupAll=0;
+  // Decomposed cumulative
+  let recYOnBase=0, recYOnExtra=0, recYCum=0;
+  let nnYCum=0, nnXCost=0, zCost=0, nnRevCum=0, baseRevImproved=0;
+  let elCount=0, elPRs=0, totNN=0;
+  // All-placements y (ignoring eligibility)
+  let allRecYMonthly=0, allRecYOnBase=0, allRecYOnExtra=0, allRecYCum=0, allPRs=0;
+
+  REC.forEach(r => {
+    if (r.npl===0) return;
+    const isEl = r.tp>=r.t;
+    const impT = Math.min(r.tm + EXTRA_MONTHS, 12);
+    const sfPP = r.npl>0 ? r.sr/r.npl : 0;
+    baseRevImproved += r.mm*impT*r.npl + r.sr;
+    markupAll += r.mm * r.npl;
+
+    // All-placements y (regardless of eligibility)
+    if (r.npl > 0) {
+      const boundsAll = BOUNDS[r.v]||[25,50];
+      const [asf1,asf2,asf3] = slabSplit(r.ps, boundsAll);
+      const [ans1,ans2,ans3] = slabSplit(r.pn, boundsAll);
+      const an1=asf1+ans1, an2=asf2+ans2, an3=asf3+ans3;
+      const aym = an1*y[1] + an2*y[2] + an3*y[3];
+      allRecYMonthly += aym;
+      allRecYOnBase += aym * r.tm;
+      allRecYOnExtra += aym * Math.min(EXTRA_MONTHS, 12 - r.tm > 0 ? EXTRA_MONTHS : 0);
+      allRecYCum += aym * impT;
+      allPRs += r.npl;
+    }
+
+    // Cross-sourcing — applies to ALL placements, not just eligible
+    const nCross = r.npl * CROSS_PCT/100;
+    const nNN = nCross * NET_NEW_PCT/100;
+    totNN += nNN;
+    const avgX = AVG_X[r.sl]||AVG_X[1];
+    zCost += nCross * avgX * zFac;
+    nnXCost += nNN * avgX;
+    const nnYm = nNN * y[r.sl];
+    nnYMonthly += nnYm;
+    nnYCum += nnYm * impT;
+    markupNN += nNN * r.mm;
+    nnRevCum += nNN * (r.mm*impT + sfPP);
+
+    if (!isEl) return;
+    elCount++; elPRs+=r.npl;
+
+    const bounds = BOUNDS[r.v]||[25,50];
+    const [sf1,sf2,sf3] = slabSplit(r.ps, bounds);
+    const [ns1,ns2,ns3] = slabSplit(r.pn, bounds);
+    const n1=sf1+ns1, n2=sf2+ns2, n3=sf3+ns3;
+
+    // Monthly y rate for this recruiter's placements
+    const yMonthly = n1*y[1] + n2*y[2] + n3*y[3];
+    recYMonthly += yMonthly;
+    recYOnBase += yMonthly * r.tm;
+    recYOnExtra += yMonthly * Math.min(EXTRA_MONTHS, 12 - r.tm > 0 ? EXTRA_MONTHS : 0);
+    recYCum += yMonthly * impT;
+
+    // Monthly markup on eligible placements
+    markupEligible += r.mm * r.npl;
+  });
+
+  // TL/Manager
+  let tlYMonthly=0, mgrYMonthly=0, tlYCum=0, mgrYCum=0, mgmtYOnBase=0, mgmtYOnExtra=0;
+  let allMgmtYCum=0, allMgmtYOnBase=0, allMgmtYOnExtra=0, allMgmtYMonthly=0;
+  TEAMS.forEach(t => {
+    const sl = mgmtSlab(t);
+    const impT = Math.min(t.avg_tm + EXTRA_MONTHS, 12);
+    const cappedPR = Math.min(t.pr, 100);
+    const ym = y[sl] * cappedPR;
+    const yBase = ym * t.avg_tm;
+    const yExtra = ym * Math.min(EXTRA_MONTHS, 12 - t.avg_tm > 0 ? EXTRA_MONTHS : 0);
+    // All TL/Mgr (regardless of eligibility)
+    allMgmtYMonthly += ym;
+    allMgmtYOnBase += yBase;
+    allMgmtYOnExtra += yExtra;
+    allMgmtYCum += ym * impT;
+    // Eligible only
+    if (!t.el) return;
+    mgmtYOnBase += yBase;
+    mgmtYOnExtra += yExtra;
+    if (t.level==='TL') { tlYMonthly+=ym; tlYCum+=ym*impT; }
+    else { mgrYMonthly+=ym; mgrYCum+=ym*impT; }
+  });
+
+  const mgmtYMonthly = tlYMonthly+mgrYMonthly;
+  const mgmtYCum = tlYCum+mgrYCum;
+
+  return {
+    recYMonthly, recYCum, recYOnBase, recYOnExtra,
+    mgmtYMonthly, mgmtYCum, mgmtYOnBase, mgmtYOnExtra, tlYMonthly, mgrYMonthly, tlYCum, mgrYCum,
+    nnYMonthly, nnYCum,
+    markupAll, markupEligible, markupNN,
+    zCost, nnXCost, nnRevCum,
+    baseRevImproved, elCount, elPRs, totNN, allPRs,
+    allRecYMonthly, allRecYOnBase, allRecYOnExtra, allRecYCum,
+    allMgmtYMonthly, allMgmtYOnBase, allMgmtYOnExtra, allMgmtYCum
+  };
+}
+
+// Helpers
+function avgMarkup() {
+  let s=0,n=0; REC.forEach(r=>{if(r.npl>0){s+=r.mm*r.npl;n+=r.npl;}}); return n>0?s/n:0;
+}
+function weightedAvgY(yVals) {
+  let sY=0,sN=0;
+  REC.forEach(r=>{
+    if(r.tp<r.t||r.npl===0) return;
+    const b=BOUNDS[r.v]||[25,50];
+    const [a,c,d]=slabSplit(r.ps,b);const [e,f,g]=slabSplit(r.pn,b);
+    const n1=a+e,n2=c+f,n3=d+g;
+    sY+=n1*yVals[1]+n2*yVals[2]+n3*yVals[3]; sN+=n1+n2+n3;
+  });
+  return sN>0?sY/sN:0;
+}
+function avgBaseTenure() {
+  let sT=0,sN=0;
+  REC.forEach(r=>{
+    if(r.tp<r.t||r.npl===0) return;
+    sT+=r.tm*r.npl; sN+=r.npl;
+  });
+  return sN>0?sT/sN:0;
+}
+
+let state = {y1:20, y2:20, y3:20, zFactor:0.5};
+const SQ = computeSQ();
+const SQ_REV = SQ.rev;
+const TOTAL_NPL = REC.reduce((s,r)=>s+r.npl,0);
+
+function render() {
+  const yVals = {1:state.y1, 2:state.y2, 3:state.y3};
+  const n = computeNew(yVals, state.zFactor);
+
+  // Decomposition
+  const retRevGain = n.baseRevImproved - SQ_REV; // = Σ mm × 1 × npl across ALL recruiters
+  const totalNewRev = n.baseRevImproved + n.nnRevCum;
+  const totalYOnBase = n.recYOnBase + n.mgmtYOnBase;
+  const totalYOnExtra = n.recYOnExtra + n.mgmtYOnExtra + n.nnYMonthly; // nn only exists in extra month
+  const totalYCum = n.recYCum + n.mgmtYCum + n.nnYCum;
+  const totalDeltaCost = totalYCum + n.zCost + n.nnXCost;
+  const totalNewCost = SQ.grand + totalDeltaCost;
+  const newProfit = totalNewRev - totalNewCost;
+  const dProfit = newProfit - SQ.margin;
+  const pos = dProfit >= 0;
+
+  // All-placements scenario
+  const allYCum = n.allRecYCum + n.allMgmtYCum + n.nnYCum;
+  const allDeltaCost = allYCum + n.zCost + n.nnXCost;
+  const allNewCost = SQ.grand + allDeltaCost;
+  const allNewProfit = totalNewRev - allNewCost;
+  const allDProfit = allNewProfit - SQ.margin;
+  const allPos = allDProfit >= 0;
+
+  // Monthly rates
+  const totalYMonthly = n.recYMonthly + n.mgmtYMonthly + n.nnYMonthly;
+
+  const avgMU = avgMarkup();
+  const avgY = weightedAvgY(yVals);
+
+  const zLabels = {1:'full base rate', 0.667:'2/3 of base', 0.5:'half of base', 0.333:'1/3 of base'};
+
+  document.getElementById('result-area').innerHTML = `
+    <div class="result-card">
+      <div class="result-title">Proposed Scheme: Current Base + Retention Bonus + Sourcing Bonus</div>
+      <div class="result-sub">${state.y1===state.y2&&state.y2===state.y3 ? 'Retention bonus = \u20B9'+state.y1+'/month per placement (flat across slabs)' : 'Retention bonus = \u20B9'+state.y1+'/\u20B9'+state.y2+'/\u20B9'+state.y3+' per month (Slab 1/2/3)'} · Sourcing bonus = ${zLabels[state.zFactor]||'half of base'}<br>${n.elCount} of ${REC.length} recruiters meet target (${n.elPRs} of ${TOTAL_NPL} placements eligible for incentives) · Current monthly incentive payout: ${fmt(SQ.grand)}</div>
+
+      <div class="delta-box ${pos?'pos':'neg'}">
+        <div class="delta-label">Change in Profit vs Current Scheme (eligible placements only)</div>
+        <div class="delta-value ${pos?'pos':'neg'}">${fmtD(dProfit)}</div>
+        <div class="delta-aside">Proposed profit: ${fmt(newProfit)} (current: ${fmt(SQ.margin)})</div>
+      </div>
+
+      <!-- INCREMENTAL MONTH -->
+      <div class="section-box">
+        <div class="section-box-title">The Extra Month of Retention</div>
+        <div class="section-box-note">If workers stay 1 additional month on average, the firm earns 1 extra month of markup. This is the revenue gain that funds the retention bonus.</div>
+        <div class="decomp-row"><span class="dl">Markup revenue earned in the extra month (across all ${TOTAL_NPL} placements)</span><span class="dv pos">${fmtD(retRevGain)}</span></div>
+        <div class="decomp-row"><span class="dl">Retention bonus paid in the extra month (eligible placements + TLs + Managers)</span><span class="dv neg">-${fmt(totalYOnExtra)}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row total"><span class="dl">Net gain from the extra month</span><span class="dv ${(retRevGain-totalYOnExtra)>=0?'pos':'neg'}">${fmtD(retRevGain - totalYOnExtra)}</span></div>
+
+        <div class="punchline ${(retRevGain-totalYOnExtra)>=0?'':'warning'}">
+          <strong>Per eligible placement:</strong> the firm earns <strong>\u20B9${Math.round(avgMU)}</strong> in markup in the extra month and pays <strong>\u20B9${avgY.toFixed(0)}</strong> in retention bonus — a net gain of <strong>\u20B9${Math.round(avgMU - avgY)}</strong> per placement.
+          ${avgMU > avgY ? 'The extra month is profitable for any retention bonus below \u20B9'+Math.round(avgMU)+'/month.' : ''}
+        </div>
+      </div>
+
+      <!-- BASE MONTHS -->
+      <div class="section-box">
+        <div class="section-box-title">Retention Bonus on Base Months</div>
+        <div class="section-box-note">The retention bonus is paid for every month the worker stays — including the months they would have stayed anyway under the current scheme. This is a pure cost increase with no matching revenue.</div>
+        <div class="decomp-row"><span class="dl">Recruiter retention bonus on base tenure (${n.elPRs} eligible placements)</span><span class="dv neg">-${fmt(n.recYOnBase)}</span></div>
+        <div class="decomp-row"><span class="dl">TL &amp; Manager retention bonus on base tenure</span><span class="dv neg">-${fmt(n.mgmtYOnBase)}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row total"><span class="dl">Total retention bonus on base months</span><span class="dv neg">-${fmt(totalYOnBase)}</span></div>
+
+        <div class="punchline">
+          <strong>This is the real cost of the retention bonus.</strong> The average eligible placement has a base tenure of ~${avgBaseTenure().toFixed(1)} months, so each placement incurs ~\u20B9${Math.round(avgY * avgBaseTenure())} in retention bonus on months where the worker would have stayed regardless. This cost is offset if the extra month's markup gain is large enough.
+        </div>
+      </div>
+
+      <!-- ONE-TIME COSTS -->
+      <div class="section-box">
+        <div class="section-box-title">One-Time Costs at Placement</div>
+        <div class="section-box-note">Paid once when the placement happens. The per-placement base incentive is unchanged from the current scheme.</div>
+        <div class="decomp-row"><span class="dl">Per-placement base incentive (unchanged from current scheme)</span><span class="dv zero">\u20B90</span></div>
+        <div class="decomp-row"><span class="dl">Sourcing bonus on cross-recruiter placements (5% of all ${TOTAL_NPL} placements = ${Math.round(n.totNN*2)})</span><span class="dv neg">${n.zCost>0.5?'-'+fmt(n.zCost):'\u20B90'}</span></div>
+        <div class="decomp-row"><span class="dl">Base incentive on net new placements (${Math.round(n.totNN)} additional PRs)</span><span class="dv neg">${n.nnXCost>0.5?'-'+fmt(n.nnXCost):'\u20B90'}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row total"><span class="dl">Total one-time cost increase</span><span class="dv neg">-${fmt(n.zCost+n.nnXCost)}</span></div>
+      </div>
+
+      <!-- CUMULATIVE -->
+      <div class="section-box">
+        <div class="section-box-title">Cumulative Impact</div>
+        <div class="section-box-note">All components combined: extra-month revenue, retention bonus across all months, one-time sourcing costs, and net new placement effects.</div>
+        <div class="decomp-row"><span class="dl">Markup revenue from extra month of retention</span><span class="dv pos">${fmtD(retRevGain)}</span></div>
+        <div class="decomp-row"><span class="dl">Revenue from net new placements (${Math.round(n.totNN)} PRs)</span><span class="dv ${n.nnRevCum>0.5?'pos':'neutral'}">${n.nnRevCum>0.5?fmtD(n.nnRevCum):'\u20B90'}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row"><span class="dl">Retention bonus — on base months (pure cost)</span><span class="dv neg">-${fmt(totalYOnBase)}</span></div>
+        <div class="decomp-row"><span class="dl">Retention bonus — on extra month</span><span class="dv neg">-${fmt(totalYOnExtra)}</span></div>
+        <div class="decomp-row"><span class="dl">Retention bonus — on net new placements</span><span class="dv ${n.nnYCum>0.5?'neg':'neutral'}">${n.nnYCum>0.5?'-'+fmt(n.nnYCum):'\u20B90'}</span></div>
+        <div class="decomp-row"><span class="dl">One-time costs (sourcing bonus + net new base)</span><span class="dv neg">-${fmt(n.zCost+n.nnXCost)}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row total"><span class="dl">Change in profit (eligible placements only)</span><span class="dv ${pos?'pos':'neg'}" style="font-size:16px">${fmtD(dProfit)}</span></div>
+      </div>
+
+      <!-- ALL PLACEMENTS COMPARISON -->
+      <div class="section-box" style="border-color:var(--border-active)">
+        <div class="section-box-title">If Retention Bonus Covered All Placements</div>
+        <div class="section-box-note">The firm earns markup on all ${n.allPRs} placements, not just the ${n.elPRs} from target-eligible recruiters. This shows the cost and profit impact if the retention bonus were paid on every placement regardless of whether the recruiter met their target.</div>
+        <div class="decomp-row"><span class="dl">Retention bonus across all recruiter placements</span><span class="dv neg">-${fmt(n.allRecYCum)}</span></div>
+        <div class="decomp-row"><span class="dl">Retention bonus across all TLs &amp; Managers</span><span class="dv neg">-${fmt(n.allMgmtYCum)}</span></div>
+        <div class="decomp-row"><span class="dl">Retention bonus on net new placements</span><span class="dv ${n.nnYCum>0.5?'neg':'neutral'}">${n.nnYCum>0.5?'-'+fmt(n.nnYCum):'\u20B90'}</span></div>
+        <div class="decomp-row"><span class="dl">One-time costs (sourcing bonus + net new base)</span><span class="dv neg">-${fmt(n.zCost+n.nnXCost)}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row"><span class="dl">Total additional cost (all placements)</span><span class="dv neg">-${fmt(allDeltaCost)}</span></div>
+        <div class="decomp-row"><span class="dl">Total additional revenue (unchanged — same for both)</span><span class="dv pos">${fmtD(retRevGain + n.nnRevCum)}</span></div>
+        <div class="decomp-divider"></div>
+        <div class="decomp-row total"><span class="dl">Change in profit (all placements)</span><span class="dv ${allPos?'pos':'neg'}" style="font-size:16px">${fmtD(allDProfit)}</span></div>
+
+        <div class="punchline ${allPos?'':'warning'}" style="margin-top:10px">
+          <strong>Comparison:</strong> Paying retention bonus on eligible placements only: <span class="${pos?'val-green':'val-red'}">${fmtD(dProfit)}</span>. Paying on all placements: <span class="${allPos?'val-green':'val-red'}">${fmtD(allDProfit)}</span>. Difference: <span class="val-${(allDProfit-dProfit)>=0?'green':'red'}">${fmtD(allDProfit - dProfit)}</span> (${n.allPRs - n.elPRs} additional placements covered).
+        </div>
+      </div>
+
+      <div class="totals-grid">
+        <div class="total-item"><div class="ti-label">Proposed Total Cost (eligible)</div><div class="ti-value">${fmt(totalNewCost)}</div></div>
+        <div class="total-item"><div class="ti-label">Proposed Revenue</div><div class="ti-value">${fmt(totalNewRev)}</div></div>
+        <div class="total-item"><div class="ti-label">Proposed Profit (eligible)</div><div class="ti-value" style="color:${newProfit>=0?'var(--green)':'var(--red)'}">${fmt(newProfit)}</div></div>
+      </div>
+    </div>`;
+}
+
+function updateSliderDisplay(id, val, avgX) {
+  document.getElementById(id).innerHTML = '\u20B9'+val+' <span class="slider-pct">('+Math.round(val/avgX*100)+'% of base)</span>';
+}
+
+document.getElementById('y1').addEventListener('input', e => { state.y1=+e.target.value; updateSliderDisplay('y1-val',state.y1,140); render(); });
+document.getElementById('y2').addEventListener('input', e => { state.y2=+e.target.value; updateSliderDisplay('y2-val',state.y2,187.5); render(); });
+document.getElementById('y3').addEventListener('input', e => { state.y3=+e.target.value; updateSliderDisplay('y3-val',state.y3,275); render(); });
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const g=btn.dataset.group;
+    document.querySelectorAll('.toggle-btn[data-group="'+g+'"]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.zFactor = parseFloat(btn.dataset.val);
+    render();
+  });
+});
+
+updateSliderDisplay('y1-val',state.y1,140);
+updateSliderDisplay('y2-val',state.y2,187.5);
+updateSliderDisplay('y3-val',state.y3,275);
+render();
+</script>
+</body>
+</html>
 .header h1 { font-size:22px; font-weight:800; letter-spacing:-0.03em; line-height:1.2; }
 .header p { font-size:13px; color:var(--text3); margin-top:4px; }
 
