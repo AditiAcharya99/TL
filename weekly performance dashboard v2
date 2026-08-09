@@ -1,0 +1,127 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-sourcing reward - your weekly progress</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#f6f7f9;color:#1a1a1a}
+ header{background:#12263f;color:#fff;padding:16px 24px}
+ header h1{margin:0 0 4px;font-size:20px}
+ header .sub{opacity:.85;font-size:13px}
+ .how{background:#fff8e6;border:1px solid #f0dfa8;border-radius:8px;margin:16px 24px 0;padding:12px 16px;font-size:13.5px;line-height:1.5}
+ .how b{color:#12263f}
+ .how .row{margin:3px 0}
+ .controls{background:#fff;border-bottom:1px solid #e4e7eb;padding:12px 24px}
+ select{font-size:15px;padding:6px 10px;border:1px solid #ccc;border-radius:6px}
+ button{font-size:13px;padding:6px 12px;border:1px solid #12263f;background:#12263f;color:#fff;border-radius:6px;cursor:pointer;margin-left:12px}
+ .key{display:block;margin-top:8px;font-size:12.5px;color:#444}
+ .sw{display:inline-block;width:20px;height:3px;vertical-align:middle;margin:0 5px 0 14px}
+ main{padding:12px 24px 60px;overflow-x:auto}
+ .colhead{display:grid;grid-template-columns:170px repeat(4,minmax(180px,1fr));gap:14px;background:#f6f7f9;padding:8px 0;font-size:12.5px;font-weight:600;color:#12263f;border-bottom:2px solid #e4e7eb;min-width:940px}
+ .card{display:grid;grid-template-columns:170px repeat(4,minmax(180px,1fr));gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid #eceef1;min-width:940px}
+ .summary{background:#eef2f7;border:1px solid #d6dee8;border-radius:8px}
+ .who{font-size:14px;font-weight:600}
+ .who small{display:block;font-weight:400;color:#8a929e}
+ .cell{background:#fff;border:1px solid #eceef1;border-radius:8px;padding:4px 6px}
+ .summary .cell{background:#fafcff}
+ .delta{font-size:11.5px;color:#5a6472;margin-top:2px}
+ .up{color:#2ca02c;font-weight:600}.down{color:#d62728;font-weight:600}.flat{color:#9aa0a6}
+ h2{font-size:15px;margin:26px 0 8px}
+ .tablewrap{max-height:460px;overflow:auto;border:1px solid #e4e7eb;border-radius:8px;background:#fff}
+ table{border-collapse:collapse;width:100%;font-size:12px}
+ th,td{border-bottom:1px solid #eceef1;padding:5px 9px;text-align:left;white-space:nowrap}
+ th{position:sticky;top:0;background:#f0f2f5;font-weight:600}
+ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+</style></head><body>
+<header><h1>Cross-sourcing reward &mdash; your weekly progress</h1>
+ <div class="sub" id="sub"></div></header>
+<div class="how">
+ <div class="row"><b>How you earn &#8377;65:</b> add candidates to HireTech. When <b>another recruiter</b> places a candidate you added, and that person joins, <b>you get &#8377;65</b> &mdash; for sourcing you already did.</div>
+ <div class="row"><b>How to read each chart:</b> the line is your count each week (left = older, right = recent). The <b>dashed line is 1 July</b>, when the reward started.</div>
+ <div class="row"><b>Colour after 1 July:</b> <span class="up">green</span> = higher than before &nbsp;&middot;&nbsp; <span class="down">red</span> = lower &nbsp;&middot;&nbsp; grey = about the same.</div>
+</div>
+<div class="controls">
+ <label>Team: <select id="team"></select></label>
+ <button id="dl">Download the table (CSV)</button>
+ <span class="key"><span class="sw" style="background:#b8bcc2"></span>before 1 July
+   <span class="sw" style="background:#2ca02c"></span>better after
+   <span class="sw" style="background:#d62728"></span>lower after</span>
+</div>
+<main>
+ <div class="colhead" id="colhead"></div>
+ <div id="summary"></div>
+ <div id="rows"></div>
+ <h2>All the numbers (week by week)</h2>
+ <div class="tablewrap"><table id="tbl"></table></div>
+</main>
+<script>
+const D={"weeks": ["4 May", "11 May", "18 May", "25 May", "1 Jun", "8 Jun", "15 Jun", "22 Jun", "29 Jun", "6 Jul", "13 Jul", "20 Jul", "27 Jul", "3 Aug"], "demarc": 8, "demarcLabel": "1 Jul", "stats": [{"key": "uploads", "label": "Candidates you added to HireTech"}, {"key": "offers_released", "label": "Offers you made"}, {"key": "help_given", "label": "Your candidates placed by a colleague (you earn \u20b965)"}, {"key": "help_received", "label": "Colleagues' candidates you placed"}], "teams": ["Airtel", "BFSI", "Consumer", "Corporate"], "maxes": {"uploads": 213, "offers_released": 31, "help_given": 6, "help_received": 8}, "recruiters": [{"name": "Abishek K", "team": "Airtel", "series": {"uploads": [0, 0, 3, 0, 154, 0, 0, 0, 0, 0, 0, 0, 184, 0], "offers_released": [2, 14, 17, 18, 11, 21, 19, 22, 10, 12, 19, 16, 8, 5], "help_given": [0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0], "help_received": [0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 3, 0, 1, 0]}}, {"name": "Yashwant Lokur", "team": "Airtel", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 1, 0, 0, 0, 4, 1, 1, 3, 5, 1, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 2, 0, 0]}}, {"name": "Arun Kumar B M", "team": "Airtel", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 0, 0, 17, 5, 5, 5, 7, 7, 12, 4, 2], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0]}}, {"name": "Galeti Ashok Kumar", "team": "Airtel", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 0, 0, 0, 1, 5, 4, 7, 1, 7, 3, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]}}, {"name": "Kalpana Shankar Madival", "team": "Airtel", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 0, 0, 0, 3, 4, 1, 5, 1, 10, 2, 3], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]}}, {"name": "Naveen Kumar K S", "team": "Airtel", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Khushi Fathima", "team": "BFSI", "series": {"uploads": [6, 5, 1, 4, 2, 4, 6, 3, 21, 5, 12, 11, 10, 11], "offers_released": [0, 10, 0, 7, 4, 12, 12, 3, 18, 6, 10, 8, 9, 7], "help_given": [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 3], "help_received": [0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0]}}, {"name": "Asif Pasha", "team": "BFSI", "series": {"uploads": [5, 6, 5, 3, 2, 4, 9, 10, 20, 7, 13, 8, 5, 8], "offers_released": [0, 8, 7, 9, 7, 7, 10, 8, 17, 6, 13, 9, 1, 6], "help_given": [0, 2, 1, 1, 0, 1, 1, 1, 2, 1, 1, 0, 0, 1], "help_received": [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 2, 1, 0, 0]}}, {"name": "Gunisetty Rajeswari", "team": "BFSI", "series": {"uploads": [9, 5, 6, 8, 0, 6, 7, 2, 6, 32, 4, 5, 10, 1], "offers_released": [0, 5, 3, 7, 2, 8, 11, 2, 12, 2, 14, 6, 11, 5], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0], "help_received": [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Sethuraji Pandiyan", "team": "BFSI", "series": {"uploads": [4, 3, 0, 3, 0, 6, 0, 2, 0, 22, 3, 1, 2, 5], "offers_released": [0, 4, 0, 4, 2, 12, 5, 1, 1, 1, 3, 2, 0, 5], "help_given": [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Kampa Prasanth Kumar", "team": "BFSI", "series": {"uploads": [8, 6, 2, 4, 1, 4, 14, 0, 5, 2, 3, 3, 10, 8], "offers_released": [0, 12, 9, 17, 5, 10, 29, 12, 20, 8, 31, 4, 9, 17], "help_given": [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]}}, {"name": "Naveen Kumar L A", "team": "BFSI", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Raghavendra R", "team": "Consumer", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 34, 71, 34], "offers_released": [4, 4, 6, 7, 16, 18, 10, 9, 9, 10, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Chaithra D M", "team": "Consumer", "series": {"uploads": [7, 5, 4, 2, 1, 4, 6, 8, 12, 10, 2, 40, 42, 0], "offers_released": [0, 6, 13, 6, 8, 18, 10, 19, 30, 17, 17, 8, 4, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 1, 3, 2, 1, 4, 0, 3, 2, 2, 2, 0, 0, 0]}}, {"name": "Lingaraju Gollalappa", "team": "Consumer", "series": {"uploads": [9, 11, 6, 4, 4, 8, 2, 4, 2, 5, 3, 12, 28, 14], "offers_released": [0, 23, 14, 12, 9, 23, 6, 11, 17, 15, 15, 16, 12, 19], "help_given": [0, 1, 3, 2, 0, 4, 1, 6, 0, 2, 1, 0, 0, 0], "help_received": [0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2]}}, {"name": "Pavithra V", "team": "Consumer", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 8, 12, 20, 14], "offers_released": [0, 0, 0, 0, 0, 0, 0, 5, 1, 3, 0, 0, 2, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 0, 0, 0, 0]}}, {"name": "Anjali", "team": "Consumer", "series": {"uploads": [0, 0, 0, 0, 2, 0, 1, 1, 3, 4, 3, 29, 18, 0], "offers_released": [0, 0, 0, 9, 7, 8, 13, 7, 5, 11, 12, 6, 1, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0], "help_received": [0, 0, 0, 8, 2, 1, 1, 1, 0, 1, 0, 0, 0, 0]}}, {"name": "Harshitha S", "team": "Consumer", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 11, 2, 7], "offers_released": [0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Supritha Shekar S", "team": "Consumer", "series": {"uploads": [1, 0, 0, 0, 2, 1, 0, 3, 2, 1, 5, 8, 0, 1], "offers_released": [0, 1, 5, 3, 5, 6, 7, 8, 4, 3, 1, 1, 3, 5], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0]}}, {"name": "Abhilash S", "team": "Consumer", "series": {"uploads": [0, 0, 0, 2, 1, 0, 1, 1, 0, 1, 1, 2, 4, 0], "offers_released": [0, 8, 3, 4, 2, 8, 5, 2, 0, 0, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Shaik Hussain Basha", "team": "Consumer", "series": {"uploads": [0, 1, 2, 1, 4, 1, 1, 1, 1, 0, 1, 0, 0, 0], "offers_released": [0, 6, 4, 1, 5, 2, 0, 0, 1, 1, 0, 0, 1, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Nagesh N", "team": "Consumer", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 1, 2, 7, 6, 10, 10, 6, 9, 9, 6, 2, 2], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 3, 0, 3, 1, 1, 0, 0, 1, 0, 0]}}, {"name": "V Shivalingaiah", "team": "Corporate", "series": {"uploads": [0, 2, 25, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 199], "offers_released": [0, 6, 4, 2, 0, 0, 0, 0, 8, 0, 1, 3, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]}}, {"name": "Chaithra Sivaramareddi", "team": "Corporate", "series": {"uploads": [0, 0, 1, 1, 201, 1, 0, 108, 170, 0, 1, 0, 1, 0], "offers_released": [0, 1, 1, 1, 2, 0, 0, 2, 1, 0, 1, 0, 9, 2], "help_given": [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0]}}, {"name": "Mohan Kumar P", "team": "Corporate", "series": {"uploads": [2, 1, 50, 4, 6, 0, 3, 120, 6, 130, 2, 10, 3, 5], "offers_released": [0, 2, 2, 6, 16, 0, 7, 9, 22, 11, 7, 12, 9, 7], "help_given": [0, 0, 2, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0]}}, {"name": "P Amareswar", "team": "Corporate", "series": {"uploads": [0, 1, 0, 0, 1, 0, 48, 2, 0, 0, 48, 48, 24, 0], "offers_released": [0, 1, 0, 0, 2, 0, 0, 7, 0, 9, 9, 9, 2, 0], "help_given": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0]}}, {"name": "Nara Manasa", "team": "Corporate", "series": {"uploads": [74, 67, 0, 20, 0, 0, 0, 0, 0, 1, 111, 0, 0, 0], "offers_released": [0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]}}, {"name": "Pinky Kumari S", "team": "Corporate", "series": {"uploads": [213, 2, 0, 1, 0, 0, 104, 1, 0, 0, 0, 0, 0, 59], "offers_released": [0, 4, 2, 2, 0, 0, 0, 2, 0, 0, 0, 0, 1, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], "help_received": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "J Thomas Vasanth kumar", "team": "Corporate", "series": {"uploads": [0, 2, 1, 0, 0, 2, 1, 2, 3, 0, 0, 4, 1, 1], "offers_released": [0, 2, 0, 0, 0, 2, 0, 4, 3, 0, 0, 3, 1, 1], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Prakyath H E", "team": "Corporate", "series": {"uploads": [2, 3, 0, 1, 0, 70, 1, 4, 1, 0, 2, 0, 0, 1], "offers_released": [0, 2, 0, 1, 1, 2, 0, 10, 2, 2, 5, 1, 0, 1], "help_given": [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0]}}, {"name": "Golla Adarsh", "team": "Corporate", "series": {"uploads": [0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1], "offers_released": [0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}, {"name": "Manoj Sonnappa", "team": "Corporate", "series": {"uploads": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "offers_released": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_given": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "help_received": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}}]};
+document.getElementById('sub').textContent=`${D.recruiters.length} recruiters | ${D.weeks[0]} to ${D.weeks[D.weeks.length-1]} 2026`;
+const sel=document.getElementById('team');
+['All',...D.teams].forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+sel.value=D.teams[0]||'All';
+const ch=document.getElementById('colhead');
+ch.innerHTML='<div>Recruiter</div>'+D.stats.map(s=>`<div>${s.label}</div>`).join('');
+
+function spark(vals,statKey,maxV,mode){
+ const W=240,H=86,ml=26,mr=8,mt=17,mb=16,iw=W-ml-mr,ih=H-mt-mb;
+ const max=maxV||D.maxes[statKey]||1,n=vals.length,dm=D.demarc;
+ const X=i=>ml+(n<=1?0:iw*i/(n-1)), Y=v=>mt+ih*(1-v/max);
+ const pre=vals.slice(0,dm),post=vals.slice(dm);
+ const psum=pre.reduce((a,b)=>a+b,0), posum=post.reduce((a,b)=>a+b,0);
+ const pm=pre.length?psum/pre.length:0, pom=post.length?posum/post.length:0;
+ const col=pom>pm?'#2ca02c':pom<pm?'#d62728':'#c2c6cc';
+ const cls=pom>pm?'up':pom<pm?'down':'flat';
+ const all=vals.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+ let ps=[];for(let i=Math.max(0,dm-1);i<n;i++)ps.push(`${X(i).toFixed(1)},${Y(vals[i]).toFixed(1)}`);
+ const dmx=(X(dm)-((n>1)?iw/(n-1)/2:0));
+ const del = mode==='both'
+   ? `total <b>${psum}</b>&rarr;<span class="${cls}">${posum}</span> &nbsp;&middot;&nbsp; per week <b>${pm.toFixed(1)}</b>&rarr;<span class="${cls}">${pom.toFixed(1)}</span>`
+   : `per week <b>${pm.toFixed(1)}</b> &rarr; <span class="${cls}">${pom.toFixed(1)}</span>`;
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet" style="height:auto;display:block">
+  <rect x="${dmx.toFixed(1)}" y="${mt}" width="${(W-mr-dmx).toFixed(1)}" height="${ih}" fill="#000" opacity="0.04"/>
+  <line x1="${dmx.toFixed(1)}" y1="${mt}" x2="${dmx.toFixed(1)}" y2="${mt+ih}" stroke="#444" stroke-dasharray="3,2"/>
+  <text x="${dmx.toFixed(1)}" y="11" font-size="8" fill="#444" text-anchor="middle">${D.demarcLabel}</text>
+  <polyline points="${all}" fill="none" stroke="#b8bcc2" stroke-width="1.2"/>
+  <polyline points="${ps.join(' ')}" fill="none" stroke="${col}" stroke-width="2.4"/>
+  <text x="2" y="${mt+6}" font-size="9" fill="#8a929e">${max}</text>
+  <text x="2" y="${mt+ih}" font-size="9" fill="#8a929e">0</text>
+  <text x="${ml}" y="${H-3}" font-size="8.5" fill="#8a929e">${D.weeks[0]}</text>
+  <text x="${W-mr}" y="${H-3}" font-size="8.5" fill="#8a929e" text-anchor="end">${D.weeks[n-1]}</text>
+  </svg>
+  <div class="delta">${del}</div>`;
+}
+function filtered(){const t=sel.value;return D.recruiters.filter(r=>t==='All'||r.team===t);}
+function renderSummary(){
+ const recs=filtered(); const box=document.getElementById('summary');
+ const totals={}, tmax={};
+ D.stats.forEach(s=>{const wk=D.weeks.map((_,i)=>recs.reduce((a,r)=>a+r.series[s.key][i],0));
+  totals[s.key]=wk; tmax[s.key]=Math.max(1,...wk);});
+ box.innerHTML=`<div class="card summary"><div class="who">TEAM TOTAL<small>${recs.length} recruiters &middot; ${sel.value}</small></div>`+
+  D.stats.map(s=>`<div class="cell">${spark(totals[s.key],s.key,tmax[s.key],'both')}</div>`).join('')+`</div>`;
+}
+function renderRows(){
+ const rows=document.getElementById('rows'); rows.innerHTML='';
+ filtered().forEach(r=>{const div=document.createElement('div');div.className='card';
+  div.innerHTML=`<div class="who">${r.name}<small>${r.team}</small></div>`+
+   D.stats.map(s=>`<div class="cell">${spark(r.series[s.key],s.key)}</div>`).join('');
+  rows.appendChild(div);});
+}
+function tableRows(){const out=[];
+ filtered().forEach(r=>D.weeks.forEach((wk,i)=>out.push(
+   [r.name,r.team,wk,...D.stats.map(s=>r.series[s.key][i])]))); return out;}
+function renderTable(){
+ const head=['Recruiter','Team','Week starting',...D.stats.map(s=>s.label)];
+ let h='<thead><tr>'+head.map((x,j)=>`<th class="${j>2?'r':''}">${x}</th>`).join('')+'</tr></thead><tbody>';
+ h+=tableRows().map(row=>'<tr>'+row.map((c,j)=>`<td class="${j>2?'r':''}">${c}</td>`).join('')+'</tr>').join('');
+ document.getElementById('tbl').innerHTML=h+'</tbody>';
+}
+document.getElementById('dl').addEventListener('click',()=>{
+ const head=['Recruiter','Team','Week starting',...D.stats.map(s=>s.key)];
+ const esc=v=>`"${String(v).replace(/"/g,'""')}"`;
+ const csv=[head.map(esc).join(',')].concat(tableRows().map(r=>r.map(esc).join(','))).join('\n');
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+ a.download=`weekly_${sel.value}.csv`; a.click();
+});
+function render(){renderSummary();renderRows();renderTable();}
+sel.addEventListener('change',render); render();
+</script></body></html>
